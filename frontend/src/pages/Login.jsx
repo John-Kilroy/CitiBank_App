@@ -71,7 +71,7 @@ export default function Login() {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: '8px' }}
+            style={{ width: '100%', justifyContent: 'center', marginTop: '4px' }}
             disabled={loading}
           >
             {loading ? 'Signing in…' : 'Sign In'}

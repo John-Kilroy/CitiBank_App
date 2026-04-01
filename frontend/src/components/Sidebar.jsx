@@ -46,18 +46,15 @@ export default function Sidebar() {
       {user && (
         <div className="sidebar-user">
           <div className="sidebar-user-info">
-            <div className="avatar" style={{ flexShrink: 0 }}>{initials}</div>
+            <div className="avatar">{initials}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {user.Fname} {user.Lname}
-              </div>
+              <div className="sidebar-user-name">{user.Fname} {user.Lname}</div>
               <span className={`badge ${user.Role === 'Leader' ? 'badge-gold' : 'badge-blue'}`} style={{ fontSize: '0.65rem' }}>
                 {user.Role}
               </span>
             </div>
           </div>
-          <button className="btn btn-ghost" onClick={handleLogout}
-            style={{ width: '100%', justifyContent: 'center', fontSize: '0.8rem', padding: '7px', marginTop: '8px' }}>
+          <button className="btn btn-ghost sidebar-signout" onClick={handleLogout}>
             Sign Out
           </button>
         </div>

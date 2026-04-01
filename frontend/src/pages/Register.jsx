@@ -60,7 +60,6 @@ export default function Register() {
       <div className="auth-card">
         <div className="auth-brand">ACME Inc.</div>
         <div className="auth-title">Create account</div>
-        <div className="auth-subtitle">New employees start as Employee role</div>
 
         <form onSubmit={handleSubmit}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
@@ -112,7 +111,7 @@ export default function Register() {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: '8px' }}
+            style={{ width: '100%', justifyContent: 'center', marginTop: '4px' }}
             disabled={loading}
           >
             {loading ? 'Creating account…' : 'Create Account'}
