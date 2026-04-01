@@ -107,7 +107,8 @@ const server = http.createServer((req, res) => {
       'content-type': headers['content-type'] || 'application/json',
       'user-agent': headers['user-agent'] || 'proxy-server',
       'host': target.host,
-      ...(headers['content-length'] ? { 'content-length': headers['content-length'] } : {})
+      ...(headers['content-length'] ? { 'content-length': headers['content-length'] } : {}),
+      ...(headers['authorization'] ? { 'authorization': headers['authorization'] } : {})
     }
   };
 

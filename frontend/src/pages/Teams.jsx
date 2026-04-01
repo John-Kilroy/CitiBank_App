@@ -60,7 +60,7 @@ export default function Teams() {
   const handleJoinRequest = async (teamId) => {
     if (!user) return
     try {
-      await api.createTeamRequest({ TeamId: teamId, EmployeeId: user.sub, Status: 'pending' })
+      await api.createTeamRequest({ TeamId: teamId, EmployeeId: user.ID, Status: 'pending' })
       await load()
     } catch (err) {
       alert('Request failed: ' + err.message)
@@ -192,9 +192,9 @@ export default function Teams() {
               const memberList = (t.Members || []).map(id => empMap[id]).filter(Boolean)
               const region = t.Region || leader?.Region || '—'
               const achievements = achMap[t.ID] || []
-              const isMember = user && (t.Members || []).includes(user.sub)
+              const isMember = user && (t.Members || []).includes(user.ID)
               const pendingReqs = requests.filter(r => r.TeamId === t.ID && r.Status === 'pending')
-              const myRequest = requests.find(r => r.TeamId === t.ID && r.EmployeeId === user?.sub)
+              const myRequest = requests.find(r => r.TeamId === t.ID && r.EmployeeId === user?.ID)
               const showRequestsPanel = requestsPanel === t.ID
               return (
                 <div key={t.ID} className="card" style={{ padding: '20px 24px' }}>

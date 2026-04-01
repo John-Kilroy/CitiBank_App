@@ -15,11 +15,17 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
+      console.log('[Dashboard] Starting data fetch...')
       const [individualsData, teamsData, achData] = await Promise.all([
         api.getIndividuals(),
         api.getTeams(),
         api.getAchievements(),
       ])
+      console.log('[Dashboard] Data fetch successful:', {
+        individuals: individualsData.length,
+        teams: teamsData.length,
+        achievements: achData.length
+      })
 
       const regions = new Set(individualsData.map(e => e.Region)).size
       setStats({
@@ -62,7 +68,7 @@ export default function Dashboard() {
           .map(([name, count]) => ({ name, count, pct: Math.round((count / total) * 100) }))
       )
     } catch (err) {
-      console.error(err)
+      console.error('[Dashboard] Data fetch failed:', err.message || err)
     } finally {
       setLoading(false)
     }

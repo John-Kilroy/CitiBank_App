@@ -24,16 +24,34 @@ function resolveEndpoint(name) {
 function getToken() {
   try {
     const stored = localStorage.getItem('auth')
-    return stored ? JSON.parse(stored).token : null
-  } catch { return null }
+    if (!stored) {
+      console.warn('[API] No auth data in localStorage')
+      return null
+    }
+    const parsed = JSON.parse(stored)
+    if (!parsed.token) {
+      console.warn('[API] Auth data exists but no token:', parsed)
+      return null
+    }
+    return parsed.token
+  } catch (e) {
+    console.warn('[API] Error reading token from localStorage:', e)
+    return null
+  }
 }
 
 function authHeaders() {
   const token = getToken()
+  if (token) {
+    console.log('[API] Sending Authorization header with token')
+  } else {
+    console.warn('[API] No token available for Authorization header')
+  }
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
 async function doFetch(url, init = {}) {
+  console.log('[doFetch]', init.method || 'GET', url)
   const response = await fetch(url, {
     ...init,
     headers: {
@@ -43,7 +61,10 @@ async function doFetch(url, init = {}) {
     },
   })
 
+  console.log('[doFetch] Response status:', response.status, 'for', url)
+
   if (response.status === 401) {
+    console.warn('[API] Got 401 Unauthorized, logging out user')
     localStorage.removeItem('auth')
     window.location.href = '/login'
     return
@@ -54,6 +75,7 @@ async function doFetch(url, init = {}) {
     // Try to parse the error message from JSON
     try {
       const parsed = JSON.parse(payload)
+      console.error('[doFetch] Error response:', parsed)
       throw new Error(parsed.error || `${response.status} ${response.statusText}`)
     } catch (e) {
       if (e.message.startsWith('{') || payload) {

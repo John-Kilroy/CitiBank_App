@@ -114,6 +114,8 @@ def get_client(is_local, mongo_port, mongo_user, mongo_pass):
         raise last_exc or RuntimeError('Unable to connect to local MongoDB')
     return _connect(os.environ.get('MONGO_HOST', 'localhost'))
 
+_KNOWN = {'individuals', 'teams', 'achievements', 'locations', 'metadata', 'auth'}
+
 # ── Handler ───────────────────────────────────────────────────────────────────
 
 def handler(event=None, context=None):
@@ -122,33 +124,19 @@ def handler(event=None, context=None):
     method   = (http_ctx.get('method') or event.get('httpMethod', 'GET')).upper()
     raw_path = event.get('rawPath') or event.get('path', '')
 
-    # DEBUG: Log the path and routing info
-    print(f"DEBUG: raw_path='{raw_path}', method='{method}', path_parts={[p for p in raw_path.strip('/').split('/') if p]}, is_auth={is_auth}, auth_action={auth_action}")
-
     if method == 'OPTIONS':
         return {"statusCode": 200, "headers": CORS_HEADERS, "body": ""}
 
     path_parts = [p for p in raw_path.strip('/').split('/') if p]
 
     # Detect auth sub-route  (/auth/login  or  /auth/register)
-    _KNOWN = {'api', 'individuals', 'teams', 'achievements', 'metadata', 'auth', 'login', 'register'}
-    is_auth     = raw_path.startswith('/auth/') or 'auth' in path_parts
+    is_auth     = 'auth' in path_parts
     auth_action = None
     if is_auth:
-        # More robust auth action detection
-        if len(path_parts) >= 2 and path_parts[-2:] == ['auth', 'login']:
+        if 'login' in path_parts:
             auth_action = 'login'
-        elif len(path_parts) >= 2 and path_parts[-2:] == ['auth', 'register']:
+        elif 'register' in path_parts:
             auth_action = 'register'
-        elif raw_path.endswith('/login') or 'login' in path_parts:
-            auth_action = 'login'
-        elif raw_path.endswith('/register') or 'register' in path_parts:
-            auth_action = 'register'
-    
-    # DEBUG: Force auth detection for testing
-    if raw_path == '/auth/login':
-        is_auth = True
-        auth_action = 'login'
     
     record_id   = None if is_auth else (
         path_parts[-1] if path_parts and path_parts[-1] not in _KNOWN else None
@@ -187,33 +175,36 @@ def handler(event=None, context=None):
                 all_docs = list(col.find({}, {'_id': 0}))
                 user = next((d for d in all_docs
                              if (d.get('Email') or '').strip().lower() == email.lower()), None)
+                
                 if not user:
                     return {"statusCode": 401, "headers": CORS_HEADERS,
                             "body": json.dumps({"error": "Invalid email or password"})}
 
-                # For debugging/development: allow login with any password for existing users
-                # In production, this should verify passwords properly
                 stored_hash = user.get('PasswordHash')
-                if stored_hash and not verify_password(password, stored_hash):
-                    # Allow default password even if hash exists (for development)
-                    if password != DEFAULT_PASSWORD:
-                        return {"statusCode": 401, "headers": CORS_HEADERS,
-                                "body": json.dumps({"error": "Invalid email or password"})}
-                elif not stored_hash and password != DEFAULT_PASSWORD:
-                    # First login — accept default password and persist hash
-                    return {"statusCode": 401, "headers": CORS_HEADERS,
-                            "body": json.dumps({"error": "Invalid email or password"})}
                 
-                # Set password hash if not set
-                if not stored_hash:
-                    col.update_one({'ID': user['ID']},
-                                   {'$set': {'PasswordHash': hash_password(password)}})
-
-                token = create_token(user['ID'], user['Role'],
-                                     f"{user['Fname']} {user['Lname']}")
-                safe_user = {k: v for k, v in user.items() if k != 'PasswordHash'}
-                return {"statusCode": 200, "headers": CORS_HEADERS,
-                        "body": json.dumps({"token": token, "user": safe_user})}
+                # For development: allow login with default password for any existing user
+                if password == DEFAULT_PASSWORD:
+                    # Set password hash if not set
+                    if not stored_hash:
+                        col.update_one({'ID': user['ID']},
+                                       {'$set': {'PasswordHash': hash_password(password)}})
+                    
+                    token = create_token(user['ID'], user['Role'],
+                                         f"{user['Fname']} {user['Lname']}")
+                    safe_user = {k: v for k, v in user.items() if k != 'PasswordHash'}
+                    return {"statusCode": 200, "headers": CORS_HEADERS,
+                            "body": json.dumps({"token": token, "user": safe_user})}
+                
+                # If not using default password, verify stored hash
+                if stored_hash and verify_password(password, stored_hash):
+                    token = create_token(user['ID'], user['Role'],
+                                         f"{user['Fname']} {user['Lname']}")
+                    safe_user = {k: v for k, v in user.items() if k != 'PasswordHash'}
+                    return {"statusCode": 200, "headers": CORS_HEADERS,
+                            "body": json.dumps({"token": token, "user": safe_user})}
+                
+                return {"statusCode": 401, "headers": CORS_HEADERS,
+                        "body": json.dumps({"error": "Invalid email or password"})}
 
             # REGISTER
             if auth_action == 'register':
@@ -252,9 +243,17 @@ def handler(event=None, context=None):
 
                 # Generate next EMP ID
                 all_ids = list(col.find({}, {'_id': 0, 'ID': 1}))
-                nums    = [int(d['ID'].replace('EMP-', '')) for d in all_ids
-                           if (d.get('ID') or '').startswith('EMP-')]
-                emp_id  = f"EMP-{str(max(nums, default=0) + 1).zfill(3)}"
+                nums = []
+                for d in all_ids:
+                    id_val = d.get('ID') or ''
+                    if id_val.startswith('EMP-'):
+                        try:
+                            num_part = id_val.replace('EMP-', '')
+                            nums.append(int(num_part))
+                        except ValueError:
+                            # Skip invalid EMP IDs
+                            continue
+                emp_id = f"EMP-{str(max(nums, default=0) + 1).zfill(3)}"
 
                 new_emp = {
                     'ID': emp_id, 'Fname': fname, 'Lname': lname, 'Email': email,
@@ -290,10 +289,6 @@ def handler(event=None, context=None):
                 conflict = next((d for d in all_docs
                                  if (d.get('Email') or '').strip().lower() == email.lower()), None)
                 if conflict:
-                    # DEBUG: Check if this is actually an auth request
-                    if raw_path == '/auth/login' or 'login' in raw_path:
-                        return {"statusCode": 200, "headers": CORS_HEADERS,
-                                "body": json.dumps({"debug": f"Path detected as auth: {raw_path}"})}
                     return {"statusCode": 409, "headers": CORS_HEADERS,
                             "body": json.dumps({"error": f"Email '{email}' is already in use"})}
             col.insert_one(body)

@@ -46,8 +46,6 @@ def get_current_user(event):
     return verify_token(token)
 
 def get_client(is_local, mongo_port, mongo_user, mongo_pass):
-
-def get_client(is_local, mongo_port, mongo_user, mongo_pass):
     def _connect(host):
         kwargs = {'host': host, 'port': mongo_port, 'serverSelectionTimeoutMS': 3000}
         if not is_local:

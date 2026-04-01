@@ -17,9 +17,17 @@ export default function Login() {
     setLoading(true)
     try {
       const data = await api.login(email, password)
+      console.log('Login response:', data)
+      
+      if (!data || !data.user || !data.token) {
+        throw new Error('Invalid login response: missing user or token')
+      }
+      
       login(data.user, data.token)
+      console.log('Auth state updated, navigating to /')
       navigate('/', { replace: true })
     } catch (err) {
+      console.error('Login error:', err)
       setError(err.message || 'Login failed')
     } finally {
       setLoading(false)
