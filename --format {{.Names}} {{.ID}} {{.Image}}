@@ -1,0 +1,61 @@
+{
+    "FunctionName": "coding-workshop-achievements-abcd1234",
+    "FunctionArn": "arn:aws:lambda:us-east-1:000000000000:function:coding-workshop-achievements-abcd1234",
+    "Runtime": "python3.11",
+    "Role": "arn:aws:iam::000000000000:role/service-role/coding-workshop-achievements-abcd1234",
+    "Handler": "function.handler",
+    "CodeSize": 1781841,
+    "Description": "",
+    "Timeout": 300,
+    "MemorySize": 128,
+    "LastModified": "2026-03-31T20:14:07.487371+0000",
+    "CodeSha256": "geUq6u/oyG5U8VRFIE0gtDhTM5drMgdrY1O2XPbpT2g=",
+    "Version": "$LATEST",
+    "VpcConfig": {
+        "SubnetIds": [],
+        "SecurityGroupIds": [],
+        "VpcId": ""
+    },
+    "DeadLetterConfig": {
+        "TargetArn": "arn:aws:sqs:us-east-1:000000000000:coding-workshop-achievements-dlq-abcd1234"
+    },
+    "Environment": {
+        "Variables": {
+            "POSTGRES_PORT": "5432",
+            "IS_LOCAL": "true",
+            "APP_ROLE": "arn:aws:iam::000000000000:role/coding-workshop-assume-abcd1234",
+            "APP_NAME": "coding-workshop-abcd1234",
+            "MONGO_HOST": "host.docker.internal",
+            "POSTGRES_NAME": "postgres",
+            "POSTGRES_HOST": "localhost",
+            "POSTGRES_PASS": "postgres123!",
+            "POSTGRES_USER": "postgres",
+            "APP_ID": "abcd1234",
+            "MONGO_PORT": "27017"
+        }
+    },
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "92423eb9-ac71-416c-87d6-fd65cd6bb2de",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
+    "PackageType": "Zip",
+    "Architectures": [
+        "x86_64"
+    ],
+    "EphemeralStorage": {
+        "Size": 512
+    },
+    "SnapStart": {
+        "ApplyOn": "None",
+        "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+        "RuntimeVersionArn": "arn:aws:lambda:us-east-1::runtime:8eeff65f6809a3ce81507fe733fe09b835899b99481ba22fd75b5a7338290ec1"
+    },
+    "LoggingConfig": {
+        "LogFormat": "Text",
+        "LogGroup": "/aws/lambda/coding-workshop-achievements-abcd1234"
+    }
+}

@@ -1,0 +1,20 @@
+[
+  {"ID": "ACH-001", "TeamId": "TEAM-001", "Desc": "Reduced credit card fraud detection false positives by 34% through rules engine overhaul."},
+  {"ID": "ACH-002", "TeamId": "TEAM-001", "Desc": "Launched contactless payment rollout across 12 NAM partner retailers."},
+  {"ID": "ACH-003", "TeamId": "TEAM-001", "Desc": "Achieved PCI DSS recertification with zero remediation items."},
+  {"ID": "ACH-004", "TeamId": "TEAM-002", "Desc": "Migrated legacy mainframe batch jobs to cloud-native microservices, cutting processing time by 60%."},
+  {"ID": "ACH-005", "TeamId": "TEAM-002", "Desc": "Deployed zero-trust network architecture across all NAM data centers."},
+  {"ID": "ACH-006", "TeamId": "TEAM-002", "Desc": "Stood up enterprise-wide API gateway serving 2M+ daily requests."},
+  {"ID": "ACH-007", "TeamId": "TEAM-003", "Desc": "Onboarded 150 high-net-worth clients onto the new digital wealth management platform."},
+  {"ID": "ACH-008", "TeamId": "TEAM-003", "Desc": "Implemented real-time cross-border wire transfer tracking for LATAM corridor."},
+  {"ID": "ACH-009", "TeamId": "TEAM-003", "Desc": "Reduced private banking client onboarding time from 14 days to 3 days."},
+  {"ID": "ACH-010", "TeamId": "TEAM-004", "Desc": "Launched virtual credit card product for EU market, acquiring 20K users in first quarter."},
+  {"ID": "ACH-011", "TeamId": "TEAM-004", "Desc": "Achieved full PSD2 Strong Customer Authentication compliance ahead of regulatory deadline."},
+  {"ID": "ACH-012", "TeamId": "TEAM-004", "Desc": "Integrated real-time currency conversion for multi-currency card spending across 8 EU countries."},
+  {"ID": "ACH-013", "TeamId": "TEAM-005", "Desc": "Built unified data lake consolidating 5 legacy APAC banking systems into a single platform."},
+  {"ID": "ACH-014", "TeamId": "TEAM-005", "Desc": "Delivered disaster recovery failover capability with sub-30-second RTO for core banking."},
+  {"ID": "ACH-015", "TeamId": "TEAM-005", "Desc": "Automated 80% of infrastructure provisioning through IaC templates, reducing deployment lead time by 70%."},
+  {"ID": "ACH-016", "TeamId": "TEAM-006", "Desc": "Rolled out AI-driven portfolio rebalancing tool for EU private banking advisors."},
+  {"ID": "ACH-017", "TeamId": "TEAM-006", "Desc": "Achieved GDPR audit compliance across all EU private banking client data workflows."},
+  {"ID": "ACH-018", "TeamId": "TEAM-006", "Desc": "Reduced advisor-to-client reporting turnaround from 5 business days to same-day delivery."}
+]

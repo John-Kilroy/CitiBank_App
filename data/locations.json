@@ -1,0 +1,42 @@
+[
+  {
+    "locationId": "LOC-001",
+    "officeName": "ACME HQ",
+    "city": "New York",
+    "state": "NY",
+    "country": "USA",
+    "timezone": "America/New_York"
+  },
+  {
+    "locationId": "LOC-002",
+    "officeName": "ACME West",
+    "city": "San Francisco",
+    "state": "CA",
+    "country": "USA",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "locationId": "LOC-003",
+    "officeName": "ACME South",
+    "city": "Austin",
+    "state": "TX",
+    "country": "USA",
+    "timezone": "America/Chicago"
+  },
+  {
+    "locationId": "LOC-004",
+    "officeName": "ACME Europe",
+    "city": "London",
+    "state": "",
+    "country": "UK",
+    "timezone": "Europe/London"
+  },
+  {
+    "locationId": "LOC-005",
+    "officeName": "ACME Remote Hub",
+    "city": "Chicago",
+    "state": "IL",
+    "country": "USA",
+    "timezone": "America/Chicago"
+  }
+]

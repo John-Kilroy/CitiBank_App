@@ -1,0 +1,8 @@
+[
+  {"ID": "TEAM-001", "Name": "NAM Credit Cards", "LeaderId": "EMP-001", "Members": ["EMP-001", "EMP-002", "EMP-005", "EMP-006", "EMP-003"]},
+  {"ID": "TEAM-002", "Name": "NAM Enterprise Technology", "LeaderId": "EMP-004", "Members": ["EMP-004", "EMP-003", "EMP-007", "EMP-008", "EMP-002"]},
+  {"ID": "TEAM-003", "Name": "LATAM Private Banking", "LeaderId": "EMP-009", "Members": ["EMP-009", "EMP-010", "EMP-011", "EMP-012", "EMP-013"]},
+  {"ID": "TEAM-004", "Name": "EU Credit Cards", "LeaderId": "EMP-014", "Members": ["EMP-014", "EMP-015", "EMP-016", "EMP-017", "EMP-018"]},
+  {"ID": "TEAM-005", "Name": "APAC Enterprise Technology", "LeaderId": "EMP-020", "Members": ["EMP-020", "EMP-021", "EMP-022", "EMP-023", "EMP-024"]},
+  {"ID": "TEAM-006", "Name": "EU Private Banking", "LeaderId": "EMP-016", "Members": ["EMP-016", "EMP-018", "EMP-015", "EMP-019", "EMP-017"]}
+]

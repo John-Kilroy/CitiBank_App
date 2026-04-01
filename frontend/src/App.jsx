@@ -1,34 +1,49 @@
-import { useState } from 'react'
-import reactLogo from '/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import Sidebar from './components/Sidebar'
+import Dashboard from './pages/Dashboard'
+import TeamMembers from './pages/TeamMembers'
+import Locations from './pages/Locations'
+import Achievements from './pages/Achievements'
+import Metadata from './pages/Metadata'
+import Teams from './pages/Teams'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Spinner from './components/Spinner'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function ProtectedLayout() {
+  const { user, loading } = useAuth()
+  if (loading) return <Spinner text="Checking authentication…" />
+  if (!user)   return <Navigate to="/login" replace />
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-layout">
+      <Sidebar />
+      <main className="main-content">
+        <Routes>
+          <Route path="/"            element={<Dashboard />} />
+          <Route path="/members"     element={<TeamMembers />} />
+          <Route path="/teams"       element={<Teams />} />
+          <Route path="/locations"   element={<Locations />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/metadata"    element={<Metadata />} />
+        </Routes>
+      </main>
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login"    element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/*"        element={<ProtectedLayout />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 
