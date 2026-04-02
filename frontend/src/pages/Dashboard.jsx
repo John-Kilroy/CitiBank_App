@@ -119,7 +119,7 @@ export default function Dashboard() {
                 <div className="card-title">Recent Achievements</div>
                 <div className="card-subtitle">Latest team milestones</div>
               </div>
-              <a href="/achievements" style={{ fontSize: '0.8rem' }}>View all →</a>
+              
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {recentAchievements.map(a => (
@@ -140,7 +140,7 @@ export default function Dashboard() {
                 <div className="card-title">Team Leaders</div>
                 <div className="card-subtitle">One leader per team</div>
               </div>
-              <a href="/members" style={{ fontSize: '0.8rem' }}>View all →</a>
+             
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {leaders.map(m => (
