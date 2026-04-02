@@ -29,6 +29,8 @@ export default function Teams() {
   const [editId, setEditId] = useState(null)
   const [saving, setSaving] = useState(false)
   const [requestsPanel, setRequestsPanel] = useState(null)  // teamId shown in requests panel
+  const [search, setSearch] = useState('')
+  const [filterRegion, setFilterRegion] = useState('All')
 
   useEffect(() => { load() }, [])
 
@@ -180,6 +182,30 @@ export default function Teams() {
       </div>
 
       <div className="page-content">
+        <div className="card" style={{ marginBottom: '16px' }}>
+          <div className="card-header" style={{ marginBottom: 0 }}>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <input
+                className="search-input"
+                placeholder="Search by team name…"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {['All', ...REGIONS].map(r => (
+                  <button
+                    key={r}
+                    className={`btn ${filterRegion === r ? 'btn-primary' : 'btn-ghost'}`}
+                    style={{ padding: '6px 14px', fontSize: '0.8rem' }}
+                    onClick={() => setFilterRegion(r)}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
         {teams.length === 0 ? (
           <div className="empty-state">
             <div className="icon">◈</div>
@@ -187,7 +213,11 @@ export default function Teams() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {teams.map(t => {
+            {teams.filter(t => {
+              const region = t.Region || empMap[t.LeaderId]?.Region || ''
+              return t.Name.toLowerCase().includes(search.toLowerCase()) &&
+                (filterRegion === 'All' || region === filterRegion)
+            }).map(t => {
               const leader = empMap[t.LeaderId]
               const memberList = (t.Members || []).map(id => empMap[id]).filter(Boolean)
               const region = t.Region || leader?.Region || '—'

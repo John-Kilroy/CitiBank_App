@@ -81,6 +81,7 @@ def handler(event=None, context=None):
                     kwargs['password'] = mongo_pass
                 kwargs['tls'] = True
                 kwargs['tlsAllowInvalidCertificates'] = True
+                kwargs['retryWrites'] = False
             return MongoClient(**kwargs)
 
         if is_local:
@@ -136,6 +137,13 @@ def handler(event=None, context=None):
             if user['role'] != 'Leader':
                 return {"statusCode": 403, "headers": CORS_HEADERS,
                         "body": json.dumps({"error": "Only leaders can delete achievements"})}
+            if not record_id:
+                return {"statusCode": 400, "headers": CORS_HEADERS,
+                        "body": json.dumps({"error": "Missing ID in path"})}
+            result = collection.delete_one({'ID': record_id})
+            if result.deleted_count == 0:
+                return {"statusCode": 404, "headers": CORS_HEADERS,
+                        "body": json.dumps({"error": "Not found"})}
             return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"deleted": record_id})}
 
         else:

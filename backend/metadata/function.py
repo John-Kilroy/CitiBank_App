@@ -22,6 +22,7 @@ def handler(event=None, context=None):
                     kwargs['password'] = mongo_pass
                 kwargs['tls'] = True
                 kwargs['tlsAllowInvalidCertificates'] = True
+                kwargs['retryWrites'] = False
             return MongoClient(**kwargs)
 
         if is_local:

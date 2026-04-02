@@ -96,6 +96,7 @@ def get_client(is_local, mongo_port, mongo_user, mongo_pass):
                 kwargs['password'] = mongo_pass
             kwargs['tls'] = True
             kwargs['tlsAllowInvalidCertificates'] = True
+            kwargs['retryWrites'] = False
         return MongoClient(**kwargs)
 
     if is_local:
