@@ -41,10 +41,13 @@ export default function Dashboard() {
       individualsData.forEach(e => { empMap[e.ID] = e })
 
       setRecentAchievements(
-        achData.slice(0, 3).map(a => {
-          const team = teamMap[a.TeamId]
-          return { id: a.ID, desc: a.Desc, teamName: team ? team.Name : a.TeamId }
-        })
+        [...achData]
+          .sort((a, b) => parseInt(b.ID.replace('ACH-', '')) - parseInt(a.ID.replace('ACH-', '')))
+          .slice(0, 3)
+          .map(a => {
+            const team = teamMap[a.TeamId]
+            return { id: a.ID, desc: a.Desc, teamName: team ? team.Name : a.TeamId }
+          })
       )
 
       setLeaders(
@@ -95,7 +98,7 @@ export default function Dashboard() {
           <div className="stat-card">
             <div className="stat-label">Active Teams</div>
             <div className="stat-value">{stats.teams}</div>
-            <div className="stat-change">Max 5 members per team</div>
+            <div className="stat-change">Working across the globe</div>
           </div>
           <div className="stat-card">
             <div className="stat-label">Achievements</div>

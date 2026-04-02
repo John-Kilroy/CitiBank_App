@@ -7,7 +7,6 @@ const navItems = [
   { to: '/teams',        icon: '◇', label: 'Teams' },
   { to: '/locations',    icon: '◎', label: 'Regions' },
   { to: '/achievements', icon: '★', label: 'Achievements' },
-  { to: '/metadata',     icon: '⊞', label: 'Metadata' },
 ]
 
 export default function Sidebar() {

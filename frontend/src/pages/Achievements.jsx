@@ -50,6 +50,9 @@ export default function Achievements() {
         }
       })
 
+      transformed.sort((a, b) =>
+        parseInt(b.id.replace('ACH-', '')) - parseInt(a.id.replace('ACH-', ''))
+      )
       setRawAch(achData)
       setTeams(teamsData)
       setEmpMap(newEmpMap)

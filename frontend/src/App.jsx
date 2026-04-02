@@ -5,7 +5,6 @@ import Dashboard from './pages/Dashboard'
 import TeamMembers from './pages/TeamMembers'
 import Locations from './pages/Locations'
 import Achievements from './pages/Achievements'
-import Metadata from './pages/Metadata'
 import Teams from './pages/Teams'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -57,7 +56,6 @@ function ProtectedLayout() {
           <Route path="/teams"       element={<Teams />} />
           <Route path="/locations"   element={<Locations />} />
           <Route path="/achievements" element={<Achievements />} />
-          <Route path="/metadata"    element={<Metadata />} />
         </Routes>
       </main>
     </div>

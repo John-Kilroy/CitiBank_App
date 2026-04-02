@@ -108,7 +108,6 @@ export const api = {
     fetchApiSubPath('individuals', 'auth/register', { method: 'POST', body: JSON.stringify(data) }),
 
   // ── Reads ────────────────────────────────────────────────────────────────────
-  getMetadata:     () => fetchApi('metadata'),
   getAchievements: () => fetchApi('achievements'),
   getIndividuals:  () => fetchApi('individuals'),
   getTeams:        () => fetchApi('teams'),
